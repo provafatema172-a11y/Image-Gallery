@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Gallery — Extended Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --primary: #06b6d4;
+  --text: #f1f5f9;
+}
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family:"Poppins",sans-serif;
+  background:var(--bg-dark);
+  color:var(--text);
+  padding:30px;
+  overflow-x:hidden;
+}
+h1 {text-align:center; font-size:2.3rem; font-weight:600; margin-bottom:25px;}
+.filters,.effect-filters {text-align:center; margin-bottom:15px;}
+.search-bar {text-align:center; margin-bottom:25px;}
+.search-bar input {padding:8px 12px; border-radius:6px; border:none; width:200px;}
+button {
+  background:var(--bg-card); color:var(--text); border:none; padding:10px 20px; margin:6px; border-radius:8px;
+  cursor:pointer; font-weight:500; transition:0.3s ease;
+}
+button:hover,button.active {
+  background:var(--primary); transform:translateY(-3px);
+  box-shadow:0px 4px 12px rgba(6,182,212,0.4);
+}
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:18px; padding:10px;
+}
+.card {
+  position:relative; overflow:hidden; border-radius:14px; cursor:pointer; background:#000;
+  box-shadow:0 4px 15px rgba(0,0,0,0.4);
+}
+.card img {
+  width:100%; height:100%; object-fit:cover;
+  transition:transform 0.5s ease, filter 0.3s ease;
+}
+.card:hover img {transform:scale(1.12); filter:brightness(80%);}
+.lightbox {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9);
+  backdrop-filter:blur(5px); justify-content:center; align-items:center; z-index:1000;
+  padding:20px; flex-direction:column;
+}
+.lightbox.active {display:flex;}
+.lightbox img {
+  max-width:90%; max-height:75%; border-radius:12px;
+  box-shadow:0 0 25px rgba(255,255,255,0.35); animation:fadeIn 0.4s ease;
+}
+.counter {color:#fff; margin-top:10px; font-weight:500;}
+@keyframes fadeIn {from{opacity:0; transform:scale(0.95);} to{opacity:1; transform:scale(1);} }
+.nav-btn {
+  position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.15);
+  color:#fff; font-size:28px; padding:12px 18px; border:none; border-radius:50%; cursor:pointer; transition:0.3s;
+}
+.nav-btn:hover {background:var(--primary); box-shadow:0 0 12px var(--primary);}
+.prev {left:25px;}
+.next {right:25px;}
+.close {position:absolute; top:25px; right:30px; font-size:35px; color:white; cursor:pointer; background:none; border:none; transition:0.3s;}
+.close:hover {color:var(--primary);}
+.grayscale img {filter:grayscale(100%);}
+.sepia img {filter:sepia(100%);}
+.blur img {filter:blur(3px);}
+@media(max-width:600px) {.nav-btn {font-size:20px; padding:8px 12px;}}
+</style>
+</head>
+<body>
+
+<h1>Image Gallery</h1>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search images...">
+</div>
+
+<div class="filters">
+  <button class="active" data-filter="all">All</button>
+  <button data-filter="nature">Nature</button>
+  <button data-filter="city">City</button>
+  <button data-filter="people">People</button>
+  <button data-filter="flowers">Flowers</button>
+  <button data-filter="food">Food</button>
+  <button data-filter="animals">Animals</button>
+</div>
+
+<div class="effect-filters">
+  <button class="ef active" data-effect="normal">Normal</button>
+  <button class="ef" data-effect="grayscale">Grayscale</button>
+  <button class="ef" data-effect="sepia">Sepia</button>
+  <button class="ef" data-effect="blur">Blur</button>
+</div>
+
+<div class="gallery" id="gallery">
+  <!-- NATURE 7 -->
+  <div class="card" data-category="nature"><img src="img12.png"></div>
+  <div class="card" data-category="nature"><img src="img13.png"></div>
+  <div class="card" data-category="nature"><img src="img14.png"></div>
+  <div class="card" data-category="nature"><img src="img15.png"></div>
+  <div class="card" data-category="nature"><img src="img16.png"></div>
+  <div class="card" data-category="nature"><img src="img17.png"></div>
+  <div class="card" data-category="nature"><img src="img18.png"></div>
+
+  <!-- CITY 6 -->
+  <div class="card" data-category="city"><img src="img33.png"></div>
+  <div class="card" data-category="city"><img src="img34.png"></div>
+  <div class="card" data-category="city"><img src="img35.png"></div>
+  <div class="card" data-category="city"><img src="img36.png"></div>
+  <div class="card" data-category="city"><img src="img37.png"></div>
+  <div class="card" data-category="city"><img src="img38.png"></div>
+
+  <!-- PEOPLE 7 -->
+  <div class="card" data-category="people"><img src="img19.png"></div>
+  <div class="card" data-category="people"><img src="img20.png"></div>
+  <div class="card" data-category="people"><img src="img21.png"></div>
+  <div class="card" data-category="people"><img src="img22.png"></div>
+  <div class="card" data-category="people"><img src="img23.png"></div>
+  <div class="card" data-category="people"><img src="img24.png"></div>
+  <div class="card" data-category="people"><img src="img25.png"></div>
+
+  <!-- FLOWERS 7 -->
+  <div class="card" data-category="flowers"><img src="img26.png"></div>
+  <div class="card" data-category="flowers"><img src="img27.png"></div>
+  <div class="card" data-category="flowers"><img src="img28.png"></div>
+  <div class="card" data-category="flowers"><img src="img29.png"></div>
+  <div class="card" data-category="flowers"><img src="img30.png"></div>
+  <div class="card" data-category="flowers"><img src="img31.png"></div>
+  <div class="card" data-category="flowers"><img src="img32.png"></div>
+
+  <!-- FOOD 11 -->
+  <div class="card" data-category="food"><img src="img1.png"></div>
+  <div class="card" data-category="food"><img src="img2.png"></div>
+  <div class="card" data-category="food"><img src="img3.png"></div>
+  <div class="card" data-category="food"><img src="img4.png"></div>
+  <div class="card" data-category="food"><img src="img5.png"></div>
+  <div class="card" data-category="food"><img src="img6.png"></div>
+  <div class="card" data-category="food"><img src="img7.png"></div>
+  <div class="card" data-category="food"><img src="img8.png"></div>
+  <div class="card" data-category="food"><img src="img9.png"></div>
+  <div class="card" data-category="food"><img src="img10.png"></div>
+  <div class="card" data-category="food"><img src="img11.png"></div>
+
+  <!-- ANIMALS 7 -->
+  <div class="card" data-category="animals"><img src="img39.png"></div>
+  <div class="card" data-category="animals"><img src="img40.png"></div>
+  <div class="card" data-category="animals"><img src="img41.png"></div>
+  <div class="card" data-category="animals"><img src="img42.png"></div>
+  <div class="card" data-category="animals"><img src="img43.png"></div>
+  <div class="card" data-category="animals"><img src="img44.png"></div>
+  <div class="card" data-category="animals"><img src="img45.png"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="close">&times;</button>
+  <button class="nav-btn prev">&#10094;</button>
+  <img id="lightboxImg">
+  <div class="counter" id="counter"></div>
+  <button class="nav-btn next">&#10095;</button>
+</div>
+
+<script>
+const cards = document.querySelectorAll(".card");
+const buttons = document.querySelectorAll(".filters button");
+const effectButtons = document.querySelectorAll(".effect-filters button");
+const gallery = document.getElementById("gallery");
+const searchInput = document.getElementById("searchInput");
+
+/* CATEGORY FILTER */
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    buttons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const filter = btn.dataset.filter;
+    cards.forEach(card => {
+      card.style.display = (filter==="all"||card.dataset.category===filter)?"block":"none";
+    });
+  });
+});
+
+/* EFFECT FILTER */
+effectButtons.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    gallery.classList.remove("grayscale","sepia","blur");
+    const effect=btn.dataset.effect;
+    if(effect!=="normal") gallery.classList.add(effect);
+    effectButtons.forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+
+/* SEARCH */
+searchInput.addEventListener("input",()=>{
+  const query = searchInput.value.toLowerCase();
+  cards.forEach(card=>{
+    const cat = card.dataset.category.toLowerCase();
+    card.style.display = cat.includes(query)?"block":"none";
+  });
+});
+
+/* LIGHTBOX */
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const counter = document.getElementById("counter");
+const prevBtn = document.querySelector(".prev");
+const nextBtn = document.querySelector(".next");
+const closeBtn = document.querySelector(".close");
+let currentIndex = 0;
+
+const visibleCards = ()=>Array.from(cards).filter(c=>c.style.display!=="none");
+
+const updateLightbox = (index)=>{
+  const visible = visibleCards();
+  if(index<0) index=visible.length-1;
+  if(index>=visible.length) index=0;
+  currentIndex=index;
+  lightboxImg.src = visible[currentIndex].querySelector("img").src;
+  counter.textContent = `${currentIndex+1} / ${visible.length}`;
+};
+
+cards.forEach(card=>{
+  card.addEventListener("click",()=>{
+    const visible = visibleCards();
+    currentIndex = visible.indexOf(card);
+    lightboxImg.src = card.querySelector("img").src;
+    counter.textContent = `${currentIndex+1} / ${visible.length}`;
+    lightbox.classList.add("active");
+  });
+});
+
+prevBtn.onclick = ()=>updateLightbox(currentIndex-1);
+nextBtn.onclick = ()=>updateLightbox(currentIndex+1);
+closeBtn.onclick = ()=>lightbox.classList.remove("active");
+lightbox.onclick = e=>{if(e.target===lightbox) lightbox.classList.remove("active");};
+</script>
+
+</body>
+</html>
